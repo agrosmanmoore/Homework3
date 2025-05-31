@@ -45,19 +45,19 @@ public:
 
     float presionEstatica, presionDinamica;
 
-    Presion(float p, float q, float t)
-        : MedicionBase(t), presionEstatica(p), presionDinamica(q) {}
+    Presion(float p, float q, float t) : MedicionBase(t), presionEstatica(p), presionDinamica(q) {}
 
-    Presion(const Presion& other)
-        : MedicionBase(other), presionEstatica(other.presionEstatica), presionDinamica(other.presionDinamica) {}
+    Presion(const Presion& other) : MedicionBase(other), presionEstatica(other.presionEstatica), presionDinamica(other.presionDinamica) {}
 
     void serializar(std::ofstream& out) const override {
+
         out.write(reinterpret_cast<const char*>(&presionEstatica), sizeof(float));
         out.write(reinterpret_cast<const char*>(&presionDinamica), sizeof(float));
         out.write(reinterpret_cast<const char*>(tiempoMedicion.get()), sizeof(float));
     }
 
     void deserializar(std::ifstream& in) override {
+
         in.read(reinterpret_cast<char*>(&presionEstatica), sizeof(float));
         in.read(reinterpret_cast<char*>(&presionDinamica), sizeof(float));
         float t;
@@ -66,6 +66,7 @@ public:
     }
 
     void imprimir() const override {
+
         std::cout << "Presion - Estatica: " << presionEstatica
                   << ", Dinamica: " << presionDinamica
                   << ", Tiempo: " << *tiempoMedicion << "\n";
@@ -73,16 +74,17 @@ public:
 };
 
 class Posicion : public MedicionBase {
+
 public:
+
     float latitud, longitud, altitud;
 
-    Posicion(float lat, float lon, float alt, float t)
-        : MedicionBase(t), latitud(lat), longitud(lon), altitud(alt) {}
+    Posicion(float lat, float lon, float alt, float t) : MedicionBase(t), latitud(lat), longitud(lon), altitud(alt) {}
 
-    Posicion(const Posicion& other)
-        : MedicionBase(other), latitud(other.latitud), longitud(other.longitud), altitud(other.altitud) {}
+    Posicion(const Posicion& other) : MedicionBase(other), latitud(other.latitud), longitud(other.longitud), altitud(other.altitud) {}
 
     void serializar(std::ofstream& out) const override {
+
         out.write(reinterpret_cast<const char*>(&latitud), sizeof(float));
         out.write(reinterpret_cast<const char*>(&longitud), sizeof(float));
         out.write(reinterpret_cast<const char*>(&altitud), sizeof(float));
@@ -90,6 +92,7 @@ public:
     }
 
     void deserializar(std::ifstream& in) override {
+
         in.read(reinterpret_cast<char*>(&latitud), sizeof(float));
         in.read(reinterpret_cast<char*>(&longitud), sizeof(float));
         in.read(reinterpret_cast<char*>(&altitud), sizeof(float));
@@ -99,6 +102,7 @@ public:
     }
 
     void imprimir() const override {
+
         std::cout << "Posicion - Lat: " << latitud
                   << ", Lon: " << longitud
                   << ", Alt: " << altitud
@@ -115,8 +119,7 @@ private:
 
 public:
 
-    SaveFlightData(const Posicion& p, const Presion& q)
-        : posicion(p), presion(q) {}
+    SaveFlightData(const Posicion& p, const Presion& q) : posicion(p), presion(q) {}
 
     void serializar(std::ofstream& out) const {
         posicion.serializar(out);
